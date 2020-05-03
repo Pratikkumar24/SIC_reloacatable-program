@@ -8,7 +8,7 @@ string optab(string a)
     it = mp.find(a);
     if (it == mp.end())
     {
-        return "0";
+        return "ERROR";
     }
     else
     {

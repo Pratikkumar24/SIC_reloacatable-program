@@ -2,8 +2,15 @@
 using namespace std;
 int main()
 {
-    string p = "MULR";
+    string p = "s";
     p = optab(p);
-    cout << p;
+    if (p == "ERROR")
+    {
+        cout << "\n Its an error";
+    }
+    else
+    {
+        cout << "\n Opcode:" << p;
+    }
     return 0;
 }
