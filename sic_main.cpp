@@ -2,7 +2,7 @@
 using namespace std;
 int main()
 {
-    string p = "a";
+    string p = "MULR";
     p = optab(p);
     cout << p;
     return 0;
