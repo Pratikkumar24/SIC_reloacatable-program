@@ -38,7 +38,12 @@ string get_object_code(string ch)
 
     while (iss >> word)
     {
-        if (word == "START")
+        if (word == "END")
+        {
+            cout << "\n ENd of the program";
+            return "OKAY";
+        }
+        else if (word == "START")
         {
             iss >> word;
             stringstream stringtoint(word);
@@ -83,8 +88,13 @@ string get_object_code(string ch)
                         {
                             if (word[i] == '\'')
                             {
-                                while (!word[++i] == '\'')
+                                int k = i + 1;
+
+                                while (!(word[k] == '\''))
+                                {
                                     counter++;
+                                    k++;
+                                }
                                 break;
                             }
                         }
@@ -96,7 +106,7 @@ string get_object_code(string ch)
                     }
                 }
                 else if (loctr != 0)
-                { //if yes
+                { //if no
                     cout << "\n ITS an ERROR..ITS ALREADy PRESENT IN THE SYMTAB";
                     cout << "\n\n\t\t TERMINATING";
                     exit(0);
