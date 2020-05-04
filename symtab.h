@@ -36,6 +36,7 @@ string get_object_code(string ch)
 
     while (iss >> word)
     {
+
         if (word == "END")
         {
             cout << "\n ENd of the program";
@@ -100,6 +101,7 @@ string get_object_code(string ch)
                     }
                     else
                     {
+
                         mpopcode.insert({word, loctr});
                     }
                 }
@@ -112,13 +114,13 @@ string get_object_code(string ch)
             }
             else if (isoptab(word)) //opcode
             {
+
                 loctr += 3;
                 iss >> word;
             }
         }
     }
 
-    cout << endl;
-
+   
     return ch;
 }
