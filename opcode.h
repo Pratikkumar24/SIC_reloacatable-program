@@ -17,3 +17,13 @@ string optab(string a)
         return it->second;
     }
 }
+int isoptab(string c)
+{
+    map<string, string>::iterator it;
+    it = mp.find(c);
+    if (it == mp.end())
+    {
+        return 0;
+    }
+    return 1;
+}
