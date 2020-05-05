@@ -26,6 +26,7 @@ void pass2(string ch)
 {
     stringstream ss(ch);
     string word;
+    ofstream fout("objectcode.txt");
     while (ss >> word)
     {
         if ((isoptab(word) == 0))
@@ -33,7 +34,9 @@ void pass2(string ch)
             if (word == "END")
             {
                 if (ss >> word)
+                {
                     continue;
+                }
             }
 
             ss >> word;
@@ -96,7 +99,7 @@ void pass2(string ch)
                 {
                     word = word.substr(0, found);
                 }
-                cout << "\n1 The nemonic value f of " << word << " is:" << optab(word);
+                cout << "\n1 The nemonic value of " << word << " is:" << optab(word);
 
                 if (ss >> word)
                 {

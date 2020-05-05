@@ -1,4 +1,5 @@
 #include "opcode.h"
+#include <math.h>
 using namespace std;
 int loctr = 0;
 
