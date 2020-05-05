@@ -2,8 +2,9 @@
 using namespace std;
 int loctr = 0;
 
-map<string, long> mpopcode;
-map<string, long>::iterator it;
+map<string, int> mpopcode;
+map<string, int>::iterator it;
+
 int conversion(int n)
 {
     int temp, hex = 0, temp1;
@@ -83,19 +84,27 @@ string get_object_code(string ch)
                     {
                         int counter = 0;
                         iss >> word;
-                        for (int i = 0; word[i]; i++)
+                        if (word[0] == 'C')
                         {
-                            if (word[i] == '\'')
+                            for (int i = 0; word[i]; i++)
                             {
-                                int k = i + 1;
 
-                                while (!(word[k] == '\''))
+                                if (word[i] == '\'')
                                 {
-                                    counter++;
-                                    k++;
+                                    int k = i + 1;
+
+                                    while (!(word[k] == '\''))
+                                    {
+                                        counter++;
+                                        k++;
+                                    }
+                                    break;
                                 }
-                                break;
                             }
+                        }
+                        else
+                        {
+                            counter = 1;
                         }
                         loctr += counter;
                     }
@@ -121,6 +130,5 @@ string get_object_code(string ch)
         }
     }
 
-   
     return ch;
 }
