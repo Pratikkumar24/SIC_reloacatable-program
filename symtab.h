@@ -41,7 +41,7 @@ string get_object_code(string ch)
 
         if (word == "END")
         {
-            cout << "\n ENd of the program";
+
             return "OKAY";
         }
         else if (word == "START")
@@ -51,7 +51,7 @@ string get_object_code(string ch)
 
             stringtoint >> loctr;
             loctr = conversion(loctr); //converting into decimal..so that addition becomes easy
-            cout << "\n Location pointer:" << loctr;
+            // cout << "\n Location pointer:" << loctr;
         }
         else
         {
@@ -117,7 +117,7 @@ string get_object_code(string ch)
                 }
                 else if (loctr != 0)
                 { //if no
-                    cout << "\n ITS an ERROR..ITS ALREADy PRESENT IN THE SYMTAB";
+                    cout << "\n ITS an ERROR..ITS ALREADY PRESENT IN THE SYMTAB";
                     cout << "\n\n\t\t TERMINATING";
                     exit(0);
                 }
