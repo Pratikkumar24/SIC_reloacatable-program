@@ -2,7 +2,49 @@
 #include <fstream>
 #include <sstream>
 using namespace std;
-
+ofstream fout("objectcode.txt");
+int index = 0;
+void entrypoint(string a, string b, int i)
+{
+    if (i == 0)
+    {
+        fout << a << b << endl;
+    }
+    else
+    {
+        char k = b[0];
+        switch (k)
+        {
+        case '0':
+            b[0] = '8';
+            break;
+        case '1':
+            b[0] = '9';
+            break;
+        case '2':
+            b[0] = 'A';
+            break;
+        case '3':
+            b[0] = 'B';
+            break;
+        case '4':
+            b[0] = 'C';
+            break;
+        case '5':
+            b[0] = 'D';
+            break;
+        case '6':
+            b[0] = 'E';
+            break;
+        case '7':
+            b[0] = 'F';
+            break;
+        default:
+            b[0] = '0';
+        }
+        fout << a << b << endl;
+    }
+}
 string convertinttohex(int p)
 {
     stringstream ss;
@@ -24,9 +66,9 @@ int giveaddress(string ch)
 }
 void pass2(string ch)
 {
+    index = 0;
     stringstream ss(ch);
     string word;
-    ofstream fout("objectcode.txt");
     while (ss >> word)
     {
         if ((isoptab(word) == 0))
@@ -66,6 +108,7 @@ void pass2(string ch)
                         ss << std::hex << (int)ch[i];
                     string mystr = ss.str();
                     cout << "\n The nemonic of " << word << ":" << mystr;
+                    entrypoint(mystr, "", index);
                 }
 
                 else
@@ -82,12 +125,29 @@ void pass2(string ch)
 
                     ch = word.substr(2, end);
                     cout << "\n The nemonic of " << word << ":" << ch;
+                    entrypoint(ch, "", index);
                 }
             }
             else
             {
                 if (word == "WORD" || word == "RESW" || word == "RESB")
                 {
+                    if (word == "WORD")
+                    {
+                        ss >> word;
+                        stringstream i(word);
+                        int x = 0;
+                        i >> x;
+                        int count = 0;
+                        string a = "000000", b = convertinttohex(x);
+                        for (int i = 0; b[i]; i++)
+                        {
+                            count++;
+                        }
+                        a = a.substr(0, 6 - count);
+                        cout << "\n\t\t\t\t\t\t\t size of x:" << sizeof(convertinttohex(x));
+                        entrypoint(a, b, index);
+                    }
                     if (ss >> word)
                     {
                         continue;
@@ -98,17 +158,20 @@ void pass2(string ch)
                 if (found != string::npos)
                 {
                     word = word.substr(0, found);
+                    index = 1;
                 }
                 cout << "\n1 The nemonic value of " << word << " is:" << optab(word);
-
+                string k = optab(word);
                 if (ss >> word)
                 {
                     size_t found = word.find(',');
                     if (found != string::npos)
                     {
                         word = word.substr(0, found);
+                        index = 1;
                     }
                     cout << "\n 1The address of " << word << ": " << convertinttohex(giveaddress(word));
+                    entrypoint(k, convertinttohex(giveaddress(word)), index);
                 }
             }
         }
@@ -116,15 +179,21 @@ void pass2(string ch)
         {
 
             cout << "\n2 The nemonic value of " << word << " is:" << optab(word);
-
+            string k = optab(word);
+            if (word == "RSUB")
+            {
+                entrypoint(k, "0000", index);
+            }
             if (ss >> word)
             {
                 size_t found = word.find(',');
                 if (found != string::npos)
                 {
                     word = word.substr(0, found);
+                    index = 1;
                 }
                 cout << "\n2 The address of " << word << ": " << convertinttohex(giveaddress(word));
+                entrypoint(k, convertinttohex(giveaddress(word)), index);
             }
         }
     }
@@ -135,7 +204,6 @@ int main()
 {
 
     ifstream fin("lineofcodes.txt");
-    ofstream fout("objectcode.txt");
 
     string lineofcode, value;
     char c;
@@ -146,7 +214,8 @@ int main()
         string value = get_object_code(lineofcode);
     }
     fin.close();
-
+    cout << endl;
+    cout << "\n The symbol table:" << endl;
     ifstream fins("lineofcodes.txt");
     cout << endl;
     cout << "\n\n NEMONIC    -    OPCODE" << endl;
@@ -154,14 +223,14 @@ int main()
     {
         cout << it->first << " => \t" << it->second << endl;
     }
+    cout << "\n The nemonics and its opcode..\n";
     while (!fins.eof())
     {
         getline(fins, lineofcode);
         pass2(lineofcode);
     }
-    cout << "\n The symbol table:" << endl;
 
-    cout << "\n Length of the program:" << loctr;
+    cout << "\n Length of the program:" << convertinttohex(loctr);
     fins.close();
     return 0;
 }
