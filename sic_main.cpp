@@ -34,14 +34,10 @@ int main()
         pass2(lineofcode);
     }
 
-    cout << "\n Length of the program:" << convertinttohex(loctr);
+    cout << "\n Length of the program:" << convertinttohex(loctr) << endl;
     fins.close();
     //pass2:bitmasking
-    ifstream in("lineofcodes.txt");
-    while (!in.eof())
-    {
-        getline(in, lineofcode);
-        }
-    in.close();
+
     return 0;
 }
+//RUK JAAA

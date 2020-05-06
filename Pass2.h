@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 ofstream fout("objectcode.txt");
+ofstream bout("output.txt");
 
 void entrypoint(string a, string b, int i)
 {
@@ -197,4 +198,46 @@ void pass2(string ch)
         }
     }
     cout << endl;
+}
+void initial(string word, int l)
+{
+    bout << "H";
+    int counter = 0;
+    for (int i = 0; (i < word[i] && i < 6); i++)
+    {
+
+        bout << word[i];
+        counter++;
+    }
+    if (counter < 6)
+    {
+        for (int i = 0; i < (6 - counter); i++)
+        {
+            bout << " ";
+        }
+    }
+    if (starting_location == 0)
+    {
+        bout << "00000000" << convertinttohex(l - starting_location);
+    }
+    else
+    {
+        bout << "00" << convertinttohex(starting_location) << "00" << convertinttohex(l - starting_location);
+    }
+    bout << endl;
+}
+void final(string word)
+{
+    if (starting_location == 0)
+    {
+        bout << "END000000";
+    }
+    else
+    {
+        bout << "END00" << convertinttohex(starting_location);
+    }
+}
+void bitmasking(string word1)
+{
+    bout << "T " << word1 << endl;
 }
