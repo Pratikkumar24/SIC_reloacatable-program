@@ -5,6 +5,27 @@ ofstream fout("objectcode.txt");
 ofstream bout("output.txt");
 map<string, string> bit;
 map<string, string>::iterator biti;
+int addcount = 0;
+long int binaryToDecimal(long int n)
+{
+    long int num = n;
+    long int dec_value = 0;
+
+    long int base = 1;
+
+    long int temp = num;
+    while (temp)
+    {
+        long int last_digit = temp % 10;
+        temp = temp / 10;
+
+        dec_value += last_digit * base;
+
+        base = base * 2;
+    }
+
+    return dec_value;
+}
 void entrypoint(string a, string b, int i)
 {
     if (i == 0)
@@ -226,11 +247,15 @@ void initial(string word, int l)
     }
     if (starting_location == 0)
     {
-        bout << "00000000" << convertinttohex(l - starting_location);
+        string len = convertinttohex(l - starting_location);
+        bout << "00000000" << len;
     }
     else
     {
-        bout << "00" << convertinttohex(starting_location) << "00" << convertinttohex(l - starting_location);
+        string len = convertinttohex(l - starting_location);
+        transform(len.begin(), len.end(), len.begin(), ::toupper);
+
+        bout << "00" << convertinttohex(starting_location) << "00" << len;
     }
     bout << endl;
 }
@@ -245,7 +270,31 @@ void final(string word)
         bout << "END00" << convertinttohex(starting_location);
     }
 }
-void bitmasking(string word1)
+void bitmasking(string text, string hexa, string address = "0000000")
 {
-    bout << "T " << word1 << endl;
+    int k = text.length();
+    k /= 2;
+    string length = convertinttohex(k);
+    int l = hexa.length();
+    l = 12 - l;
+    while (l--)
+    {
+        hexa += '0';
+    }
+    stringstream geek(hexa);
+    long int x = 0;
+    geek >> x;
+    hexa = convertinttohex(binaryToDecimal(x));
+    transform(hexa.begin(), hexa.end(), hexa.begin(), ::toupper);
+    transform(length.begin(), length.end(), length.begin(), ::toupper);
+    if (length.length() < 2)
+    {
+        string s = "00";
+        s[1] = length[0];
+        bout << "T " << address << " " << s << " " << hexa << " " << text << endl;
+    }
+    else
+    {
+        bout << "T " << address << " " << length << " " << hexa << " " << text << endl;
+    }
 }

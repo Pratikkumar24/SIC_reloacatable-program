@@ -5,7 +5,6 @@ int loctr = 0;
 int starting_location = 0;
 map<string, int> mpopcode;
 map<string, int>::iterator it;
-
 int conversion(int n)
 {
     int temp, hex = 0, temp1;
@@ -51,8 +50,9 @@ string get_object_code(string ch)
 
             stringtoint >> loctr;
             loctr = conversion(loctr); //converting into decimal..so that addition becomes easy
-            // cout << "\n Location pointer:" << loctr;
+            cout << "\n Location pointer:" << loctr;
             starting_location = loctr;
+
         }
         else
         {

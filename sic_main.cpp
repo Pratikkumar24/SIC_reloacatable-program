@@ -43,20 +43,44 @@ int main()
     string opcodes;
     string hexa;
     int occurence = 0;
-
     string text;
+    int incr = 0;
     int counter = 0;
     int flag = 0;
     string init;
     getline(filin, init);
     initial(init, loctr);
+    //location
+    int location = starting_location;
+    cout << "\n The perfect location:" << location;
+    //Making of address
+
     while (filin >> opcodes)
     {
+
         if (occurence == 1 && isoptab(opcodes))
         {
             cout << "\n\n\tThe TEXT:" << text << endl;
+            string s;
+            for (int i = 0; i < incr; i++)
+            {
+                s += hexa[i];
+            }
+            s += "00";
+            cout << "\n\t\t\nHEXA:" << s;
+            bitmasking(text, s);
+            hexa.clear();
+            incr = 0;
             text.clear();
             sc >> source;
+            if (opcodes == "RSUB" || opcodes == "WORD" || opcodes == "BYTE")
+            {
+                hexa[incr++] = '0';
+            }
+            else
+            {
+                hexa[incr++] = '1';
+            }
             text += source;
             occurence = 0;
             counter = 1;
@@ -65,6 +89,14 @@ int main()
         {
             sc >> source;
             text += source;
+            if (opcodes == "RSUB")
+            {
+                hexa[incr++] = '0';
+            }
+            else
+            {
+                hexa[incr++] = '1';
+            }
             counter++;
         }
         else if (opcodes == "WORD" || opcodes == "BYTE")
@@ -73,16 +105,42 @@ int main()
             text += source;
             counter++;
             occurence = 1;
+            hexa[incr++] = '0';
         }
 
         if (counter >= 10)
         {
             cout << "\n\n\tThe TEXT:" << text << endl;
+            string s;
+            for (int i = 0; i < incr; i++)
+            {
+                s += hexa[i];
+            }
+            s += "00";
+
+            cout << "\n\t\t\nHEXA:" << s;
+            bitmasking(text, s);
+
+            hexa.clear();
+            incr = 0;
             text.clear();
             counter = 0;
         }
     }
     cout << "\n\n\t The Text:" << text << endl;
+    string s;
+    for (int i = 0; i < incr; i++)
+    {
+        s += hexa[i];
+    }
+    s += "00";
+
+    cout << "\n\t\t\nHEXA:" << s << endl;
+    bitmasking(text, s);
+    cout << endl;
+    final("END");
+    cout << "\n THe address:" << endl;
+
     return 0;
 }
 
