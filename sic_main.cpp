@@ -18,15 +18,7 @@ int main()
     //end
 
     //Pass2:
-    cout << endl;
-    cout << "\n The symbol table:" << endl;
     ifstream fins("lineofcodes.txt");
-    cout << endl;
-    cout << "\n\n NEMONIC    -    OPCODE" << endl;
-    for (it = mpopcode.begin(); it != mpopcode.end(); it++)
-    {
-        cout << it->first << " => \t" << it->second << endl;
-    }
 
     while (!fins.eof())
     {
@@ -34,41 +26,53 @@ int main()
         pass2(lineofcode);
     }
 
-    cout << "\n Length of the program:" << convertinttohex(loctr) << endl;
     fins.close();
-    //pass2:bitmasking
+
+    //pass2:bitmasking(continue)
+
     ifstream filin("lineofcodes.txt");
     ifstream sc("objectcode.txt");
-    string source;
-    string opcodes;
-    string hexa;
-    int occurence = 0;
-    string text;
-    int incr = 0;
-    int counter = 0;
-    int flag = 0;
-    string init;
-    getline(filin, init);
-    initial(init, loctr);
-    //location
+    string source, opcodes, hexa, text, init;
+    int occurence = 0;    //if the resw/resb occurs then need to break the chain
+    int incr = 0;         //index for the bitmask
+    int counter = 0;      //if the text is <=10 then action is taking accordingly
+    getline(filin, init); //sending the first record
+    initial(init, loctr); //sending the first location
+
+    // storing the starting location in the variable location
     int location = starting_location;
-    cout << "\n The perfect location:" << location;
+
     //Making of address
+    int index = -1;
+    int even = 0;
 
     while (filin >> opcodes)
     {
-
+        if (isoptab(opcodes) || opcodes == "WORD" || opcodes == "RESW" || opcodes == "RESB" || opcodes == "BYTE")
+        { //already a array of address has been made
+            // hence to get that particular address of
+            //the opcode the index is been incremented
+            index++;
+        }
         if (occurence == 1 && isoptab(opcodes))
-        {
-            cout << "\n\n\tThe TEXT:" << text << endl;
+        { //if the word/byte/RESW/RESB occurs
+            //or the opcode occurs
             string s;
             for (int i = 0; i < incr; i++)
             {
                 s += hexa[i];
             }
             s += "00";
-            cout << "\n\t\t\nHEXA:" << s;
-            bitmasking(text, s);
+            if (even == 1)
+            {
+                bitmasking(text, s, l[index - 1]);
+                even = 0;
+            }
+            else
+            {
+                bitmasking(text, s, l[index]);
+                even = 1;
+            }
             hexa.clear();
             incr = 0;
             text.clear();
@@ -76,10 +80,12 @@ int main()
             if (opcodes == "RSUB" || opcodes == "WORD" || opcodes == "BYTE")
             {
                 hexa[incr++] = '0';
+                //adding the bitmask
             }
             else
             {
                 hexa[incr++] = '1';
+                //adding the bitmask
             }
             text += source;
             occurence = 0;
@@ -88,19 +94,23 @@ int main()
         else if (isoptab(opcodes))
         {
             sc >> source;
+
             text += source;
             if (opcodes == "RSUB")
             {
                 hexa[incr++] = '0';
+                //adding the bitmask
             }
             else
             {
                 hexa[incr++] = '1';
+                //adding the bitmask
             }
             counter++;
         }
         else if (opcodes == "WORD" || opcodes == "BYTE")
         {
+
             sc >> source;
             text += source;
             counter++;
@@ -110,38 +120,48 @@ int main()
 
         if (counter >= 10)
         {
-            cout << "\n\n\tThe TEXT:" << text << endl;
             string s;
             for (int i = 0; i < incr; i++)
             {
                 s += hexa[i];
             }
             s += "00";
-
-            cout << "\n\t\t\nHEXA:" << s;
-            bitmasking(text, s);
-
+            if (even == 1)
+            {
+                bitmasking(text, s, l[index - 1]);
+                even = 0;
+            }
+            else
+            {
+                bitmasking(text, s, l[index]);
+                even = 1;
+            }
             hexa.clear();
             incr = 0;
             text.clear();
             counter = 0;
         }
     }
-    cout << "\n\n\t The Text:" << text << endl;
+
+    index++;
     string s;
     for (int i = 0; i < incr; i++)
     {
         s += hexa[i];
     }
     s += "00";
+    if (even == 1)
+    {
+        bitmasking(text, s, l[index - 1]);
+        even = 0;
+    }
+    else
+    {
+        bitmasking(text, s, l[index]);
+        even = 1;
+    }
 
-    cout << "\n\t\t\nHEXA:" << s << endl;
-    bitmasking(text, s);
-    cout << endl;
-    final("END");
-    cout << "\n THe address:" << endl;
+    final("END"); //sending the end record
 
     return 0;
 }
-
-//RUK JAAA

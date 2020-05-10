@@ -129,7 +129,6 @@ void pass2(string ch)
                     for (int i = 0; i < ch.size(); ++i)
                         ss << std::hex << (int)ch[i];
                     string mystr = ss.str();
-                    // cout << "\n The nemonic of " << word << ":" << mystr;
                     entrypoint(mystr, "", index);
                 }
 
@@ -146,7 +145,6 @@ void pass2(string ch)
                     }
 
                     ch = word.substr(2, end);
-                    // cout << "\n The nemonic of " << word << ":" << ch;
                     entrypoint(ch, "", index);
                 }
             }
@@ -167,7 +165,6 @@ void pass2(string ch)
                             count++;
                         }
                         a = a.substr(0, 6 - count);
-                        // cout << "\n\t\t\t\t\t\t\t size of x:" << sizeof(convertinttohex(x));
                         entrypoint(a, b, index);
                     }
                     if (ss >> word)
@@ -182,7 +179,6 @@ void pass2(string ch)
                     word = word.substr(0, found);
                     index = 1;
                 }
-                // cout << "\n1 The nemonic value of " << word << " is:" << optab(word);
                 string k = optab(word);
                 if (ss >> word)
                 {
@@ -192,7 +188,6 @@ void pass2(string ch)
                         word = word.substr(0, found);
                         index = 1;
                     }
-                    // cout << "\n 1The address of " << word << ": " << convertinttohex(giveaddress(word));
                     entrypoint(k, convertinttohex(giveaddress(word)), index);
                 }
             }
@@ -200,7 +195,6 @@ void pass2(string ch)
         else
         {
 
-            // cout << "\n2 The nemonic value of " << word << " is:" << optab(word);
             string k = optab(word);
             if (word == "RSUB")
             {
@@ -214,12 +208,10 @@ void pass2(string ch)
                     word = word.substr(0, found);
                     index = 1;
                 }
-                // cout << "\n2 The address of " << word << ": " << convertinttohex(giveaddress(word));
                 entrypoint(k, convertinttohex(giveaddress(word)), index);
             }
         }
     }
-    // cout << endl;
 }
 void initial(string word, int l)
 {
@@ -263,17 +255,24 @@ void final(string word)
 {
     if (starting_location == 0)
     {
-        bout << "END000000";
+        bout << "E000000";
     }
     else
     {
-        bout << "END00" << convertinttohex(starting_location);
+        bout << "E0" << convertinttohex(starting_location);
     }
 }
-void bitmasking(string text, string hexa, string address = "0000000")
+void bitmasking(string text, string hexa, int location)
 {
+    if (location == loctr)
+    {
+        location -= 3;
+    }
+
     int k = text.length();
     k /= 2;
+    location = location - (k - 3);
+
     string length = convertinttohex(k);
     int l = hexa.length();
     l = 12 - l;
@@ -291,10 +290,10 @@ void bitmasking(string text, string hexa, string address = "0000000")
     {
         string s = "00";
         s[1] = length[0];
-        bout << "T " << address << " " << s << " " << hexa << " " << text << endl;
+        bout << "T00" << convertinttohex(location) << s << hexa << text << endl;
     }
     else
     {
-        bout << "T " << address << " " << length << " " << hexa << " " << text << endl;
+        bout << "T00" << convertinttohex(location) << length << hexa << text << endl;
     }
 }

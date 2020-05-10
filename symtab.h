@@ -4,6 +4,8 @@ using namespace std;
 int loctr = 0;
 int starting_location = 0;
 map<string, int> mpopcode;
+vector<int> l;
+
 map<string, int>::iterator it;
 int conversion(int n)
 {
@@ -50,9 +52,8 @@ string get_object_code(string ch)
 
             stringtoint >> loctr;
             loctr = conversion(loctr); //converting into decimal..so that addition becomes easy
-            cout << "\n Location pointer:" << loctr;
             starting_location = loctr;
-
+            l.push_back(loctr);
         }
         else
         {
@@ -64,6 +65,8 @@ string get_object_code(string ch)
                     if (word == "WORD")
                     {
                         loctr += 3;
+                        l.push_back(loctr);
+
                         iss >> word;
                     }
                     else if (word == "RESW")
@@ -74,6 +77,7 @@ string get_object_code(string ch)
                         stringtoint >> k;
                         k *= 3;
                         loctr += k;
+                        l.push_back(loctr);
                     }
                     else if (word == "RESB")
                     {
@@ -81,6 +85,7 @@ string get_object_code(string ch)
                         stringstream stringtoint(word);
                         stringtoint >> k;
                         loctr += k;
+                        l.push_back(loctr);
                     }
                     else if (word == "BYTE") // C'EOF'..find the length of byte..hereit is 3
                     {
@@ -109,6 +114,7 @@ string get_object_code(string ch)
                             counter = 1;
                         }
                         loctr += counter;
+                        l.push_back(loctr);
                     }
                     else
                     {
@@ -127,6 +133,8 @@ string get_object_code(string ch)
             {
 
                 loctr += 3;
+                l.push_back(loctr);
+
                 iss >> word;
             }
         }
